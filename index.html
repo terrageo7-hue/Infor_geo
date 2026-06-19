@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Minha resposta</title>
+    <style>
+     *{
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Outfit', sans-serif;
+     }
+     body {
+      height: 100svh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, #0f172a, #1e1b4b); 
+      color: #87ceeb; 
+      padding: 15px; 
+      overflow: hidden; 
+      position: relative;
+     }
+
+     /* TELA DE ENTRADA */
+     .tela-inicial {
+       display: flex;
+       flex-direction: column;
+       align-items: center;
+       gap: 15px;
+       width: 100%;
+       max-width: 350px;
+       transition: opacity 0.5s ease, transform 0.5s ease;
+       z-index: 10;
+     }
+     .tela-inicial h2 {
+       color: #fafafa;
+       font-size: 22px;
+       text-align: center;
+       margin-bottom: 5px;
+     }
+     .campo-nome {
+       width: 100%;
+       padding: 14px 20px;
+       border-radius: 50px;
+       border: 2px solid rgba(255, 255, 255, 0.1);
+       background-color: rgba(30, 41, 59, 0.8);
+       color: #fafafa;
+       font-size: 16px;
+       outline: none;
+       text-align: center;
+       transition: border-color 0.3s;
+     }
+     .campo-nome:focus {
+       border-color: #ff007b;
+     }
+     .btn-abrir {
+       background-color: #ff007b;
+       color: white;
+       border: none;
+       padding: 15px 35px;
+       font-size: 18px;
+       font-weight: bold;
+       border-radius: 50px;
+       cursor: pointer;
+       width: 100%;
+       box-shadow: 0 10px 20px rgba(255, 0, 123, 0.3);
+       transition: transform 0.2s, box-shadow 0.2s;
+     }
+     .btn-abrir:hover {
+       transform: scale(1.03);
+       box-shadow: 0 15px 25px rgba(255, 0, 123, 0.5);
+     }
+
+     .esconder {
+       opacity: 0 !important;
+       transform: scale(0.9);
+       pointer-events: none;
+       display: none !important;
+     }
+
+     /* ESTILO DO CARTÃO */
+     .cartao {
+       background-color: #1e293b; 
+       border: 1px solid rgba(255, 255, 255, 0.1); 
+       border-radius: 24px;
+       padding: 40px 20px; 
+       max-width: 540px; 
+       width: 100%;
+       text-align: center; 
+       box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3), 0 10px 10px -5px rgba(0, 0, 0, 0.2); 
+       z-index: 10;
+       display: none;
+       opacity: 0;
+       transform: scale(0.95);
+     }
+     .mostrar-cartao {
+       display: block;
+       animation: fadeIn 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+     }
+     @keyframes fadeIn {
+       to {
+         opacity: 1;
+         transform: scale(1);
+       }
+     }
+
+     /* TEXTO ANIMADO */
+     .txt_animado {
+      font-size: 20px;
+      font-weight: bold;
+      line-height: 1.6;
+     }
+     .nome-inserido {
+       color: #87ceeb;
+       text-transform: uppercase;
+     }
+     .txt_animado span {
+      font-size: 20px;
+      font-weight: 300;
+      position: relative;
+      display: inline-block;
+      white-space: nowrap; 
+     }
+     .txt_animado span::before {
+      content: "";
+      color: #ff007b;
+      font-weight: bold;
+      animation: palavras 25s infinite;
+     }
+     
+     @keyframes palavras {
+      0%, 20% { content: " é o meu motivo de sorrir!"; }
+      21%, 40% { content: " tem o coração mais lindo!"; }
+      41%, 60% { content: " torna os meus dias melhores!"; }
+      61%, 80% { content: " é uma pessoa incrível!"; }
+      81%, 100% { content: " merece o mundo inteiro!!!"; }
+     }
+     
+     .txt_animado span::after {
+       content: "";
+       position: absolute;
+       height: 100%;
+       border-left: 2px solid #ff007b;
+       right: -10px;
+       animation: cursor .9s infinite, digita 25s steps(15) infinite;
+       width: calc(100% + 14px);
+       background-color: #1e293b; 
+     }
+     @keyframes digita {
+       10%, 15%, 30%, 35%, 50%, 55%, 70%, 75%, 90%, 95% { width: 0; }
+       5%, 20%, 25%, 40%, 45%, 60%, 65%, 80%, 85% { width: calc(100% + 14px); }
+     }
+     @keyframes cursor {
+       0%, 100% { border-left-color: transparent; }
+       50% { border-left-color: #ff007b; }
+     }
+
+     /* CONFETES */
+     .confete {
+       position: absolute;
+       top: -20px;
+       width: 10px;
+       height: 10px;
+       border-radius: 50%;
+       animation: cair 3s linear forwards;
+       z-index: 5;
+     }
+     @keyframes cair {
+       0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+       100% { transform: translateY(105svh) rotate(360deg); opacity: 0; }
+     }
+
+     @media (max-width: 480px) {
+       .txt_animado { font-size: 15px; }
+       .txt_animado span { font-size: 15px; }
+       .cartao { padding: 30px 15px; }
+       .tela-inicial h2 { font-size: 19px; }
+     }
+    </style>
+</head>
+<body>
+
+  <!-- Puxa a música direto da mesma pasta do site para garantir compatibilidade móvel -->
+  <audio id="musicaFundo" src="musica.mp3" loop preload="auto"></audio>
+
+  <div class="tela-inicial" id="telaInicial">
+    <h2>Quem está abrindo este cartão?</h2>
+    <input type="text" id="inputNome" class="campo-nome" placeholder="Digite o nome aqui..." autocomplete="off">
+    <button class="btn-abrir" id="btnAtivar">Ver Minha Resposta ❤️</button>
+  </div>
+
+  <div class="cartao" id="meuCartao">
+    <div class="txt_animado">
+        <span class="nome-inserido" id="nomeAlvo">VOCÊ</span><span></span>
+    </div>
+  </div>
+
+  <script>
+    const btnAtivar = document.getElementById('btnAtivar');
+    const telaInicial = document.getElementById('telaInicial');
+    const meuCartao = document.getElementById('meuCartao');
+    const inputNome = document.getElementById('inputNome');
+    const nomeAlvo = document.getElementById('nomeAlvo');
+    const musica = document.getElementById('musicaFundo');
+
+    btnAtivar.addEventListener('click', () => {
+      let nomeUsuario = inputNome.value.trim();
+      
+      if (nomeUsuario !== "") {
+        nomeAlvo.innerText = nomeUsuario;
+      }
+
+      // Toca a música local (permitido em todos os dispositivos móveis após o clique)
+      musica.volume = 0.6; 
+      musica.play().catch(error => {
+         console.log("Erro ao reproduzir o áudio:", error);
+      });
+
+      telaInicial.classList.add('esconder');
+      
+      setTimeout(() => {
+        meuCartao.classList.add('mostrar-cartao');
+        criarEfeitoConfete();
+      }, 300);
+    });
+
+    function criarEfeitoConfete() {
+      const cores = ['#ff007b', '#87ceeb', '#ffeb3b', '#4caf50', '#9c27b0'];
+      for (let i = 0; i < 100; i++) {
+        const confete = document.createElement('div');
+        confete.classList.add('confete');
+        confete.style.left = Math.random() * 100 + 'vw';
+        confete.style.backgroundColor = cores[Math.floor(Math.random() * cores.length)];
+        confete.style.animationDelay = Math.random() * 2 + 's';
+        confete.style.transform = `scale(${Math.random() * 0.8 + 0.4})`;
+        
+        if (Math.random() > 0.5) { confete.style.borderRadius = '0px'; }
+        
+        document.body.appendChild(confete);
+        setTimeout(() => { confete.remove(); }, 5000);
+      }
+    }
+  </script>
+
+</body>
+</html>
+
